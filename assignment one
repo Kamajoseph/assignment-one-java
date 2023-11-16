@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+public class LoginProgram {
+    public static void main(String[] args) {
+        // Set the correct username and password
+        String correctUsername = "user123";
+        String correctPassword = "pass123";
+
+        // Create a Scanner object for user input
+        Scanner scanner = new Scanner(System.in);
+
+        // Give the user three attempts to enter the correct credentials
+        for (int attempts = 1; attempts <= 3; attempts++) {
+            // Get username from the user
+            System.out.print("Enter username: ");
+            String enteredUsername = scanner.nextLine();
+
+            // Get password from the user with masking
+            System.out.print("Enter password: ");
+            String enteredPassword = getPasswordInput(scanner);
+
+            // Check if the entered credentials are correct
+            if (correctUsername.equals(enteredUsername) && correctPassword.equals(enteredPassword)) {
+                System.out.println("Login successful!");
+                break; // Exit the loop if login is successful
+            } else {
+                System.out.println("Login failed. Please try again. Attempts left: " + (3 - attempts));
+            }
+        }
+
+        // Close the Scanner
+        scanner.close();
+    }
+
+    // Function to get password input with masking
+    private static String getPasswordInput(Scanner scanner) {
+        // Disable the newline character from being considered as input
+        System.out.print("Enter password: ");
+        scanner.useDelimiter("\n");
+
+        // Get password input with masking
+        String enteredPassword = "";
+        while (true) {
+            char c = System.console().readPassword()[0];
+            if (c == '\r' || c == '\n') {
+                break; // Break the loop on Enter key
+            }
+            System.out.print("*"); // Print '*' for each character
+            enteredPassword += c;
+        }
+
+        // Reset the delimiter to the default (newline)
+        scanner.reset();
+
+        // Print a newline after masking
+        System.out.println();
+
+        return enteredPassword;
+    }
+}
